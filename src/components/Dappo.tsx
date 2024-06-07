@@ -1,5 +1,6 @@
+
 "use client"
-import { Box, Button, Container, HStack, Spacer, Stack, VStack } from "@chakra-ui/react"
+import { Text, Box, Button, Container, Heading, HStack, Spacer, Stack, VStack } from "@chakra-ui/react"
 import { FC, PropsWithChildren, useEffect, useRef, useState } from "react"
 
 const randomWord = () => {
@@ -20,7 +21,7 @@ const Charbox: FC<PropsWithChildren<{}>> = ({ children }) => {
     {children}
   </Box>
 }
-const SampleButton: FC<{ chars: string[], onComplete: () => void }> = ({ chars, onComplete }) => {
+const Chars: FC<{ chars: string[], onComplete: () => void }> = ({ chars, onComplete }) => {
   const exec = useRef(false)
   const [display, setDisplay] = useState<string[]>([])
   const say = async (chars: string[]) => {
@@ -47,29 +48,47 @@ const SampleButton: FC<{ chars: string[], onComplete: () => void }> = ({ chars, 
     say(chars)
   }, [chars])
   return <HStack minH="25vmin" justifyContent={"space-between"} w="100%">
-    {padDisplay.map(char => {
-      return char
-        ? <Charbox>{char}</Charbox>
-        : <Box fontSize={"15vmin"} w="1.5em"></Box>
+    {padDisplay.map((char, i) => {
+      return <Box key={i}>
+        {
+          char
+            ? <Charbox>{char}</Charbox>
+            : <Box fontSize={"15vmin"} w="1.5em"></Box>
+        }
+      </Box>
     })}
   </HStack>
 }
 
+const Header = () => {
+  return <Heading justifySelf={"start"} fontFamily={"'Zen Old Mincho', serif"} bg="black" fontSize={"lg"} p={2} w="auto" position={"absolute"} left={2} top={2}>
+    <HStack gap={1}>
+      <Text color="white">
+        脱法
+      </Text>
+      <Text color="#17fc03">
+        放送不適切用語エミュレータ
+      </Text>
+    </HStack>
+  </Heading>
+
+}
 export const Dappo: FC<{}> = () => {
   const [tryCount, setTry] = useState(1)
   const [execute, setExecute] = useState(false)
   const [current, setCurrent] = useState<string[]>([])
   return <Container>
-    <VStack justifyContent={"space-between"} h="90vh">
+    <Header />
+    <VStack justifyContent={"space-between"} h="90vh" >
       <Spacer />
-      <SampleButton key={current.join("")} chars={current} onComplete={() => {
+      <Chars key={current.join("")} chars={current} onComplete={() => {
         setExecute(false)
         setTry(t => t + 1)
       }} />
       <Spacer />
       <Box p={1} bg="#73e691" w="100%">
-
         <Button variant={"outline"} bg="#73e691"
+          fontFamily={"'Zen Old Mincho', serif"}
           color="black"
           borderRadius={0}
           size="lg" colorScheme="green" w="100%" isDisabled={execute} onClick={() => {
@@ -77,8 +96,7 @@ export const Dappo: FC<{}> = () => {
             setExecute(true)
             setCurrent(chars)
           }}>
-          {tryCount}
-          周目
+          {tryCount}  周目
         </Button>
       </Box>
     </VStack>
