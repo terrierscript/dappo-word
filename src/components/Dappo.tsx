@@ -1,7 +1,7 @@
 
 "use client"
 import { Text, Box, Button, Container, Heading, HStack, Spacer, Stack, VStack } from "@chakra-ui/react"
-import { FC, PropsWithChildren, useEffect, useRef, useState } from "react"
+import { FC, PropsWithChildren, useEffect, useMemo, useRef, useState } from "react"
 
 const randomWord = () => {
   const chars = [
@@ -73,8 +73,19 @@ const Header = () => {
   </Heading>
 
 }
-export const Dappo: FC<{}> = () => {
-  const [tryCount, setTry] = useState(1)
+const localStorageKey = "DAPPO_COUNT"
+const getStoredCount = () => {
+  try {
+    return Number(localStorage?.getItem(localStorageKey))
+  } catch {
+    return 1
+  }
+}
+const DappoClient: FC<{}> = () => {
+  const cnt = useMemo(() => {
+    return getStoredCount()
+  }, [])
+  const [tryCount, setTry] = useState(cnt)
   const [execute, setExecute] = useState(false)
   const [current, setCurrent] = useState<string[]>([])
   return <Container>
@@ -83,7 +94,11 @@ export const Dappo: FC<{}> = () => {
       <Spacer />
       <Chars key={current.join("")} chars={current} onComplete={() => {
         setExecute(false)
-        setTry(t => t + 1)
+        setTry(t => {
+          const n = t + 1
+          localStorage.setItem(localStorageKey, n.toString())
+          return n
+        })
       }} />
       <Spacer />
       <Box p={1} bg="#73e691" w="100%">
@@ -101,4 +116,10 @@ export const Dappo: FC<{}> = () => {
       </Box>
     </VStack>
   </Container>
+}
+export const Dappo = () => {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return <></>
+  return <DappoClient />
 }
