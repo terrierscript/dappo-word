@@ -1,13 +1,13 @@
 import { Box, Container } from '@chakra-ui/react'
 import Head from 'next/head'
 import React from 'react'
-import { SampleComponent } from '../components/SampleComponent'
+import { Dappo } from '../components/Dappo'
 
 export default function Home() {
   return (
     <Box>
       <Container>
-        <SampleComponent />
+        <Dappo />
       </Container>
     </Box>
   )
