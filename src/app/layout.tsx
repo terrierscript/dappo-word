@@ -1,7 +1,7 @@
 import { Provider } from "./AppProvider"
 
 export const metadata = {
-  title: '脱法放送不適切養護エミュレータ',
+  title: '脱法放送不適切用語エミュレータ',
   description: '',
 }
 

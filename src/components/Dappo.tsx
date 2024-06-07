@@ -90,7 +90,7 @@ const DappoClient: FC<{}> = () => {
   const [current, setCurrent] = useState<string[]>([])
   return <Container>
     <Header />
-    <VStack justifyContent={"space-between"} h="90vh" >
+    <VStack justifyContent={"space-between"} h="100vh" pb={"15vh"} >
       <Spacer />
       <Chars key={current.join("")} chars={current} onComplete={() => {
         setExecute(false)
